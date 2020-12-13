@@ -111,6 +111,11 @@ export default {
         flowable: flowableModdle
       }
     })
+    // 初始化样式
+    const overlay = this.$refs.canvas.querySelector('.djs-overlay-container')
+    if (overlay) {
+      overlay.style.zIndex = 1
+    }
     // 新增流程定义
     if (!this.xml) {
       this.newDiagram()
