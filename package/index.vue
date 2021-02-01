@@ -111,11 +111,11 @@ export default {
         flowable: flowableModdle
       }
     })
-    // 初始化样式
-    const overlay = this.$refs.canvas.querySelector('.djs-overlay-container')
-    if (overlay) {
-      overlay.style.zIndex = 1
-    }
+	// 初始化样式
+	const overlay = this.$refs.canvas.querySelector('.djs-overlay-container')
+	if (overlay) {
+	  overlay.style.zIndex = 1
+	}
     // 新增流程定义
     if (!this.xml) {
       this.newDiagram()
@@ -152,9 +152,10 @@ export default {
     },
     async createNewDiagram(data) {
       // 将字符串转换成图显示出来
-      // xml = xml.replace(/</g, '&lt;')
-      // xml = xml.replace(/>/g, '&gt;')
-      data = data.replace(/<!\[CDATA\[(.+)]]>/g, '&lt;![CDATA[$1]]&gt;')
+      // data = data.replace(/<!\[CDATA\[(.+?)]]>/g, '&lt;![CDATA[$1]]&gt;')
+      data = data.replace(/<!\[CDATA\[(.+?)]]>/g, function(match, str) {
+        return str.replace(/</g, '&lt;')
+      })
       try {
         await this.modeler.importXML(data)
         this.adjustPalette()
@@ -282,9 +283,7 @@ export default {
     },
     async saveXML(download = false) {
       try {
-        let { xml } = await this.modeler.saveXML({ format: true })
-        xml = xml.replace(/&lt;/g, '<')
-        xml = xml.replace(/&gt;/g, '>')
+        const { xml } = await this.modeler.saveXML({ format: true })
         if (download) {
           this.downloadFile(`${this.getProcessElement().name}.bpmn20.xml`, xml, 'application/xml')
         }

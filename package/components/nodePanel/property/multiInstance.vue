@@ -31,6 +31,7 @@
 
 <script>
 import mixinPanel from '../../../common/mixinPanel'
+import { formatJsonKeyValue } from '../../../common/parseElement'
 export default {
   mixins: [mixinPanel],
   data() {
@@ -49,19 +50,21 @@ export default {
             xType: 'input',
             name: 'collection',
             label: '集合',
+            disabled: true,
             tooltip: '属性会作为表达式进行解析。如果表达式解析为字符串而不是一个集合，<br />不论是因为本身配置的就是静态字符串值，还是表达式计算结果为字符串，<br />这个字符串都会被当做变量名，并从流程变量中用于获取实际的集合。'
           },
           {
             xType: 'input',
             name: 'elementVariable',
             label: '元素变量',
+            disabled: true,
             tooltip: '每创建一个用户任务前，先以该元素变量为label，集合中的一项为value，<br />创建（局部）流程变量，该局部流程变量被用于指派用户任务。<br />一般来说，该字符串应与指定人员变量相同。'
           },
           {
             xType: 'radio',
             name: 'isSequential',
             label: '执行方式',
-            dic: [{ label: '串行', value: 'true' }, { label: '并行', value: 'false' }]
+            dic: [{ label: '串行', value: true }, { label: '并行', value: false }]
           },
           {
             xType: 'input',
@@ -72,41 +75,40 @@ export default {
         ],
         operate: [
           { text: '确定', show: true, click: _this.save },
-          { text: '清空', show: true, click: () => { _this.formData = {} } }
+          { text: '清空', show: true, click: () => { _this.formData = {
+            [_this.formConfig.item[0].name]: _this.element.id + '_collect',
+			[_this.formConfig.item[1].name]: _this.element.id + '_item'
+		  } } }
         ]
       }
     }
   },
   mounted() {
-    const cache = JSON.parse(JSON.stringify(this.element.businessObject.multiInstanceLoopCharacteristics?.$attrs ?? {}))
-    cache.completionCondition = this.element.businessObject.multiInstanceLoopCharacteristics?.completionCondition?.body
-    // 移除flowable前缀，格式化数组
-    for (const key in cache) {
-      if (key.indexOf('flowable:') === 0) {
-        const newKey = key.replace('flowable:', '')
-        cache[newKey] = cache[key]
-        delete cache[key]
-      }
-    }
-    this.formData = cache
+    const cache = JSON.parse(JSON.stringify(this.element.businessObject.loopCharacteristics ?? {}))
+    cache.completionCondition = cache.completionCondition?.body
+    this.formData = formatJsonKeyValue(Object.assign({}, cache, {
+        [this.formConfig.item[0].name]: this.element.id + '_collect',
+        [this.formConfig.item[1].name]: this.element.id + '_item'
+	}))
   },
   methods: {
     updateElement() {
-      if (this.formData.isSequential) {
-        let multiInstanceLoopCharacteristics = this.element.businessObject.get('multiInstanceLoopCharacteristics')
-        if (!multiInstanceLoopCharacteristics) {
-          multiInstanceLoopCharacteristics = this.modeler.get('moddle').create('bpmn:MultiInstanceLoopCharacteristics')
+      if (typeof this.formData.isSequential === 'boolean') {
+        let loopCharacteristics = this.element.businessObject.get('loopCharacteristics')
+        if (!loopCharacteristics) {
+          loopCharacteristics = this.modeler.get('moddle').create('bpmn:MultiInstanceLoopCharacteristics')
         }
-        multiInstanceLoopCharacteristics.$attrs['isSequential'] = this.formData.isSequential
-        multiInstanceLoopCharacteristics.$attrs['flowable:collection'] = this.formData.collection
-        multiInstanceLoopCharacteristics.$attrs['flowable:elementVariable'] = this.formData.elementVariable
+        loopCharacteristics['isSequential'] = this.formData.isSequential
+        loopCharacteristics['collection'] = this.formData.collection
+        loopCharacteristics['elementVariable'] = this.formData.elementVariable
         if (this.formData.completionCondition) {
           const completionCondition = this.modeler.get('moddle').create('bpmn:Expression', { body: this.formData.completionCondition })
-          multiInstanceLoopCharacteristics['completionCondition'] = completionCondition
+          loopCharacteristics['completionCondition'] = completionCondition
         }
-        this.updateProperties({ multiInstanceLoopCharacteristics: multiInstanceLoopCharacteristics })
+        this.updateProperties({ loopCharacteristics: loopCharacteristics })
       } else {
-        delete this.element.businessObject.multiInstanceLoopCharacteristics
+        this.updateProperties({ loopCharacteristics: undefined })
+        delete this.element.businessObject.loopCharacteristics
       }
     },
     save() {
@@ -120,5 +122,9 @@ export default {
 <style>
 .muti-instance .el-form-item {
   margin-bottom: 22px;
+}
+
+.muti-instance .el-button {
+  margin-right: 10px;
 }
 </style>

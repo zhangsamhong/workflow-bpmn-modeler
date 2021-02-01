@@ -92,7 +92,12 @@ export default {
             name: 'name',
             label: '节点名称'
           },
-          {
+		  {
+		    xType: 'slot',
+		    name: 'multiInstance',
+		    label: '多实例'
+		  },
+          /* {
             xType: 'colorPicker',
             name: 'color',
             label: '节点颜色'
@@ -242,7 +247,7 @@ export default {
             name: 'dueDate',
             label: '到期时间',
             show: !!_this.showConfig.dueDate
-          }
+          } */
         ]
       }
     }
@@ -349,7 +354,7 @@ export default {
         ?.filter(item => item.$type === 'flowable:TaskListener').length ?? 0
     },
     computedHasMultiInstance() {
-      if (this.element.businessObject.multiInstanceLoopCharacteristics) {
+      if (this.element.businessObject.loopCharacteristics) {
         this.hasMultiInstance = true
       } else {
         this.hasMultiInstance = false

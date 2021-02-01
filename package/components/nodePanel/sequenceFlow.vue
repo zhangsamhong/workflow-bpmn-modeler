@@ -43,7 +43,7 @@ export default {
             name: 'name',
             label: '节点名称'
           },
-          {
+          /* {
             xType: 'colorPicker',
             name: 'color',
             label: '节点颜色'
@@ -57,17 +57,17 @@ export default {
             xType: 'slot',
             name: 'executionListener',
             label: '执行监听器'
-          },
+          }, */
           {
             xType: 'input',
             name: 'conditionExpression',
             label: '跳转条件'
           },
-          {
+          /* {
             xType: 'input',
             name: 'skipExpression',
             label: '跳过表达式'
-          }
+          } */
         ]
       }
     }
@@ -75,7 +75,7 @@ export default {
   watch: {
     'formData.conditionExpression': function(val) {
       if (val) {
-        const newCondition = this.modeler.get('moddle').create('bpmn:FormalExpression', { body: `<![CDATA[${val}]]>` })
+        const newCondition = this.modeler.get('moddle').create('bpmn:FormalExpression', { body: val })
         this.updateProperties({ conditionExpression: newCondition })
       } else {
         this.updateProperties({ conditionExpression: null })

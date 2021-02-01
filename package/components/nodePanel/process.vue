@@ -49,12 +49,12 @@ export default {
       return {
         inline: false,
         item: [
-          {
+          /* {
             xType: 'select',
             name: 'processCategory',
             label: '流程分类',
             dic: { data: _this.categorys, label: 'name', value: 'id' }
-          },
+          }, */
           {
             xType: 'input',
             name: 'id',
@@ -66,7 +66,7 @@ export default {
             name: 'name',
             label: '流程名称'
           },
-          {
+          /* {
             xType: 'colorPicker',
             name: 'color',
             label: '节点颜色'
@@ -85,7 +85,7 @@ export default {
             xType: 'slot',
             name: 'signal',
             label: '信号定义'
-          }
+          } */
         ]
       }
     }

@@ -1,6 +1,6 @@
 {
   "name": "flowable-bpmn-modeler-mychanges",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "description": "基于 `vue` 和 `bpmn.io@7.0` ，实现 flowable 的 modeler 模型设计器（基于workflow-bpmn-modeler@0.2.5做了修改）",
   "main": "dist/flowable-bpmn-modeler-mychanges.umd.min.js",
   "scripts": {

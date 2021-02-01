@@ -43,7 +43,7 @@ export default {
             name: 'name',
             label: '节点名称'
           },
-          {
+          /* {
             xType: 'colorPicker',
             name: 'color',
             label: '节点颜色'
@@ -57,7 +57,7 @@ export default {
             xType: 'slot',
             name: 'executionListener',
             label: '执行监听器'
-          },
+          }, */
           {
             xType: 'switch',
             name: 'async',

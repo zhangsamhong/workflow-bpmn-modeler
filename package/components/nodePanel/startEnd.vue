@@ -44,7 +44,7 @@ export default {
             name: 'name',
             label: '节点名称'
           },
-          {
+          /* {
             xType: 'colorPicker',
             name: 'color',
             label: '节点颜色'
@@ -70,7 +70,7 @@ export default {
             name: 'formKey',
             label: '表单标识key',
             show: !!_this.showConfig.formKey
-          }
+          } */
         ]
       }
     }
