@@ -53,13 +53,13 @@ export default {
             xType: 'input',
             name: 'documentation',
             label: '节点描述'
-          },
+          }, */
           {
             xType: 'slot',
             name: 'executionListener',
             label: '执行监听器'
-          },
-          {
+          }
+          /* {
             xType: 'input',
             name: 'initiator',
             label: '发起人',

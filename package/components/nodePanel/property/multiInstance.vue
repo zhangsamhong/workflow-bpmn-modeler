@@ -50,7 +50,6 @@ export default {
             xType: 'input',
             name: 'collection',
             label: '集合',
-            disabled: true,
             tooltip: '属性会作为表达式进行解析。如果表达式解析为字符串而不是一个集合，<br />不论是因为本身配置的就是静态字符串值，还是表达式计算结果为字符串，<br />这个字符串都会被当做变量名，并从流程变量中用于获取实际的集合。'
           },
           {
@@ -75,10 +74,12 @@ export default {
         ],
         operate: [
           { text: '确定', show: true, click: _this.save },
-          { text: '清空', show: true, click: () => { _this.formData = {
-            [_this.formConfig.item[0].name]: _this.element.id + '_collect',
-			[_this.formConfig.item[1].name]: _this.element.id + '_item'
-		  } } }
+          { text: '清空', show: true, click: () => {
+            _this.formData = {
+              [_this.formConfig.item[0].name]: _this.element.id + '_collect',
+              [_this.formConfig.item[1].name]: _this.element.id + '_item'
+		  }
+          } }
         ]
       }
     }
@@ -87,9 +88,9 @@ export default {
     const cache = JSON.parse(JSON.stringify(this.element.businessObject.loopCharacteristics ?? {}))
     cache.completionCondition = cache.completionCondition?.body
     this.formData = formatJsonKeyValue(Object.assign({}, cache, {
-        [this.formConfig.item[0].name]: this.element.id + '_collect',
-        [this.formConfig.item[1].name]: this.element.id + '_item'
-	}))
+      [this.formConfig.item[0].name]: this.element.id + '_collect',
+      [this.formConfig.item[1].name]: this.element.id + '_item'
+    }))
   },
   methods: {
     updateElement() {

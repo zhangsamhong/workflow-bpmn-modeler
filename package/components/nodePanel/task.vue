@@ -92,11 +92,11 @@ export default {
             name: 'name',
             label: '节点名称'
           },
-		  {
-		    xType: 'slot',
-		    name: 'multiInstance',
-		    label: '多实例'
-		  },
+          {
+            xType: 'slot',
+            name: 'multiInstance',
+            label: '多实例'
+          },
           /* {
             xType: 'colorPicker',
             name: 'color',
@@ -106,13 +106,13 @@ export default {
             xType: 'input',
             name: 'documentation',
             label: '节点描述'
-          },
+          }, */
           {
             xType: 'slot',
             name: 'executionListener',
             label: '执行监听器'
-          },
-          {
+          }
+          /* {
             xType: 'slot',
             name: 'taskListener',
             label: '任务监听器',
